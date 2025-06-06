@@ -8,12 +8,22 @@ const Home = () => {
 	const [todo,settodo] = useState("");
 	const [importance, setimportance] = useState("");
 	const [lists, setlists] = useState([]);
-	const deletelist = (idx) =>{
-		const tempLists= lists.toSpliced(idx, 1);
-		localStorage.setItem("library", JSON.stringify(tempLists));
-		setlists(tempLists);
-		
+	const deletelist = async (todo_id) =>{
+		const resp = fetch("https://playground.4geeks.com/todo/todos/${todo_id}", {
+			method: "DELETE",
+			headers: "Content-Type" : "aplication/json"
+			}
+		)
 	}
+	const loadData = async () => {
+		const resp = fetch("https://playground.4geeks.com/todo/todos/jayknight7535");
+		const data = resp.JSON();
+		setlists(data.list)
+	}
+	
+	useState(() => {
+		loadData()
+	})
 
 
 	
@@ -21,7 +31,7 @@ const Home = () => {
 	  <div className="card">
  		<div className="card-body">
     	  <form
-		  onSubmit={(ev) => {
+		  onSubmit= {(ev) => {
 			ev.preventDefault();
 			setlists([...lists, {todo, importance}]);
 			settodo("");
@@ -46,8 +56,8 @@ const Home = () => {
 			</div>
 		  </form>
 		  <div>
-			{lists.map((list, idx) => (
-                <TodoItem list= {list} showDelete onDelete={() => deletelist(idx)} key={idx}/>
+			{lists.map((list, list_id) => (
+                <TodoItem list= {list} showDelete onDelete={() => deletelist(list_id)} key={list_id}/>
             ))}
 		  </div>
         </div>

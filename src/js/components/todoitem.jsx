@@ -1,4 +1,5 @@
 const TodoItem = ({list, showDelete= false, onDelete}) => {
+   
     return (
         <div className="flex-d">
             <div className="d-flex justify-content-between">
@@ -7,7 +8,7 @@ const TodoItem = ({list, showDelete= false, onDelete}) => {
                   <div>{list?.importance ? list.importance: ""}</div>
                   <div>
                     {showDelete ? (
-                  <button type="button" className="btn-close" aria-label="Close" onClick={onDelete}></button>) : ("")}
+                   <button type="button" className="btn-close" aria-label="Close" onClick={onDelete}></button>) : ("")}
                    </div>
                 </div> 
             </div>
