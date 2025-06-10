@@ -11,14 +11,14 @@ const Home = () => {
 	const deletelist = async (todo_id) =>{
 		const resp = fetch("https://playground.4geeks.com/todo/todos/${todo_id}", {
 			method: "DELETE",
-			headers: "Content-Type" : "aplication/json"
+			headers: {"Content-Type" : "aplication/json"}
 			}
 		)
 	}
 	const loadData = async () => {
-		const resp = fetch("https://playground.4geeks.com/todo/todos/jayknight7535");
-		const data = resp.JSON();
-		setlists(data.list)
+		const resp = await fetch("https://playground.4geeks.com/todo/users/jayknight7535");
+		const data = await resp.json();
+		setlists(data.lists)
 	}
 	
 	useState(() => {
@@ -30,13 +30,21 @@ const Home = () => {
 	return (
 	  <div className="card">
  		<div className="card-body">
-    	  <form
-		  onSubmit= {(ev) => {
-			ev.preventDefault();
+    	  <form  onSubmit= { async (ev) => {
+			if ([todo, importance].some((x)=>x)){
+				const resp = await fetch("https://playground.4geeks.com/todo/todos/jayknight7535)", {
+					method : "Post",
+					body : JSON.stringify({
+						todo,
+						importance
+					})
+				})
+			const data = await resp.json;
+		    ev.preventDefault();
 			setlists([...lists, {todo, importance}]);
 			settodo("");
 			setimportance("");
-		  }}>
+		  }}}>
 			<input 
 			 className ="form-control" 
 			 type="text" 
@@ -56,8 +64,8 @@ const Home = () => {
 			</div>
 		  </form>
 		  <div>
-			{lists.map((list, list_id) => (
-                <TodoItem list= {list} showDelete onDelete={() => deletelist(list_id)} key={list_id}/>
+			{lists.map((list, idx) => (
+                <TodoItem list= {list} showDelete onDelete={() => deletelist(list_id)} key={idx}/>
             ))}
 		  </div>
         </div>
